@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
+      showPerformanceOverlay: true,
       title: AppString.flutterPuzzleHack,
       home: HomePage(),
       onGenerateRoute: Routes.onGenerateRoute,
