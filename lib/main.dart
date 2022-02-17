@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_puzzle_hack/const/app_string.dart';
 import 'package:flutter_puzzle_hack/routes/routes.dart';
+import 'package:flutter_puzzle_hack/routes/routes_name.dart';
 import 'package:flutter_puzzle_hack/view/home_page/home_page.dart';
 
 void main() {
@@ -30,7 +31,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: true,
       title: AppString.flutterPuzzleHack,
-      home: HomePage(),
+      initialRoute: RoutesName.homeRoute,
       onGenerateRoute: Routes.onGenerateRoute,
     );
   }
