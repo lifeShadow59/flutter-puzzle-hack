@@ -1,12 +1,8 @@
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_puzzle_hack/view/home_page/crop_image.dart';
 import 'package:flutter_puzzle_hack/view/home_page/file_picker.dart';
-import 'dart:developer' as developer;
-import "package:image/image.dart" as ui;
-import 'package:image_picker/image_picker.dart';
+// import "package:image/image.dart" as image;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,8 +15,9 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin, FilePicker {
   late Animation<double> animation;
   late AnimationController _controller;
-  List<dynamic> bytes = [];
-  Image? thumbnail;
+  // image.Image? fromImagePicker;
+  List<int>? imageBytesList;
+  List<Image>? imageMemoryList;
   @override
   void initState() {
     super.initState();
@@ -47,44 +44,59 @@ class _HomePageState extends State<HomePage>
           ),
           IconButton(
             onPressed: () async {
-              Timeline.timeSync('interesting function', () async {
-                bytes = await pickImage();
-                if (bytes.isNotEmpty) {
-                  final ui.Image? image = ui.decodeImage(bytes[0]);
-                  if (image != null) {
-                    ui.Image newCropImage =
-                        ui.Image(image.width ~/ 4, image.height ~/ 4);
-                    ui.Image newEmege = copyInto(
-                      newCropImage,
-                      image,
-                      dstX: 0,
-                      dstY: 0,
-                      srcH: image.height,
-                      srcW: image.width,
-                      srcX: 0,
-                      srcY: 0,
-                    );
-                    bytes.add(newEmege);
-                    newEmege;
-                    thumbnail = Image.memory(image.getBytes());
-                    print('run this');
-                    print('bytes len -> ${bytes.length}');
-                    print(thumbnail);
-                  }
+              Timeline.timeSync(
+                'interesting function',
+                () async {
+                  MediaQueryData queryData = MediaQuery.of(context);
+                  double devicePixelRatio = queryData.devicePixelRatio;
+                  imageMemoryList = await pickImage();
                   setState(() {});
-                }
-              });
+                },
+              );
+            }
 
-              // Timeline.finishSync();
-            },
+            // Timeline.finishSync();
+            ,
             icon: const Icon(Icons.ac_unit_outlined),
             iconSize: 50,
           ),
-          if (thumbnail != null)
+          if (imageMemoryList != null && imageMemoryList!.isNotEmpty)
             Expanded(
               child: SingleChildScrollView(
-                // child: Image.memory(bytes[0]),
-                child: thumbnail,
+                child: Column(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          imageMemoryList![0],
+                          imageMemoryList![1],
+                          imageMemoryList![2],
+                        ],
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          imageMemoryList![3],
+                          imageMemoryList![4],
+                          imageMemoryList![5],
+                        ],
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          imageMemoryList![6],
+                          imageMemoryList![7],
+                          imageMemoryList![8],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             )
         ],
